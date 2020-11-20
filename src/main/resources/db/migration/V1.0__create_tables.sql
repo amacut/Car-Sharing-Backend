@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS users, user_company_details, vehicle_types, vehicle_models, vehicles, rentals_history, promotions;
+DROP TABLE IF EXISTS users, user_company_details, user_wallet, user_driving_license, vehicle_types, vehicle_models, vehicles, rentals_history, promotions;
 
 CREATE TABLE users
 (
@@ -36,16 +36,26 @@ CREATE TABLE user_company_details
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
-/*CREATE TABLE user_driving_license
+CREATE TABLE user_wallet
 (
-    id               INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    user_id          INT UNSIGNED NOT NULL,
-    front_photo     ,
-    selfie_with_driving_license
+    id       INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    user_id  INT UNSIGNED NOT NULL,
+    currency VARCHAR(3),
+    value    DOUBLE,
 
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users (id)
-);*/
+);
+
+CREATE TABLE user_driving_license
+(
+    id      INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    user_id INT UNSIGNED NOT NULL,
+    photo   VARCHAR(100),
+
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES users (id)
+);
 
 CREATE TABLE vehicle_types
 (
@@ -71,22 +81,21 @@ CREATE TABLE vehicle_models
 
 CREATE TABLE vehicles
 (
-    id                    INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    vehicle_model_id      INT UNSIGNED NOT NULL,
-    registration          VARCHAR(12)  NOT NULL,
-    fuel                  DOUBLE       NOT NULL,
-    current_fuel          DOUBLE       NOT NULL,
-    vehicle_range         DOUBLE       NOT NULL,
-    current_vehicle_range DOUBLE       NOT NULL,
-    distance              DOUBLE       NOT NULL,
-    coordinates_X         VARCHAR(9)   NOT NULL,
-    coordinate_Y          VARCHAR(9)   NOT NULL,
-    created_at            TIMESTAMP,
-    updated_at            TIMESTAMP,
-    deleted_at            TIMESTAMP,
+    id            INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    model_id      INT UNSIGNED NOT NULL,
+    registration  VARCHAR(12)  NOT NULL,
+    max_fuel      DOUBLE       NOT NULL,
+    current_fuel  DOUBLE       NOT NULL,
+    max_range     DOUBLE       NOT NULL,
+    current_range DOUBLE       NOT NULL,
+    latitude      VARCHAR(9)   NOT NULL,
+    longitude     VARCHAR(9)   NOT NULL,
+    created_at    TIMESTAMP,
+    updated_at    TIMESTAMP,
+    deleted_at    TIMESTAMP,
 
     PRIMARY KEY (id),
-    FOREIGN KEY (vehicle_model_id) REFERENCES vehicle_models (id)
+    FOREIGN KEY (model_id) REFERENCES vehicle_models (id)
 );
 
 CREATE TABLE rentals_history

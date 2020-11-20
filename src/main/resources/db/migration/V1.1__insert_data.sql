@@ -8,6 +8,14 @@ VALUES ('Adam', 'Kowalski', 'adamkowalski@gmail.com', '48123456789', 'password',
 INSERT INTO user_company_details (user_id, company_name, nip_number, country, street, house_no_flat_no, postcode, city)
 VALUES (1, 'Najlepsza firma', '1234567890', 'Polska', 'Warszawska', '201/87', '33-444', 'Warszawa');
 
+INSERT INTO user_wallet (user_id, currency, value)
+VALUES (1, 'PLN', 200.0),
+       (2, 'PLN', 20.0);
+
+INSERT INTO user_driving_license (user_id, photo)
+VALUES (1, 'C:\\Users\\adama\\IdeaProjects\\car-sharing-app\\driving_license\\user_1_dl'),
+       (2, 'C:\\Users\\adama\\IdeaProjects\\car-sharing-app\\driving_license\\user_2_dl');
+
 INSERT INTO vehicle_types (name, diving_price, stop_over_price, distance_price)
 VALUES ('Economy', '0,50', '0,20', '0,80'),
        ('Comfort', '0,80', '0,20', '0,80'),
@@ -19,12 +27,11 @@ VALUES (1, 'Fiat', '500'),
        (2, 'Toyota', 'Corolla Hybrid'),
        (3, 'Mercedes', 'GLA');
 
-INSERT INTO vehicles (vehicle_model_id, registration, fuel, current_fuel, vehicle_range,
-                      current_vehicle_range,
-                      distance, coordinates_X, coordinate_Y)
-VALUES (1, 'AA12345', 30.0, 15.0, 500.0, 250.0, 0.9, '52.236499', '21.006457'),
-       (2, 'BB12345', 35.0, 15.0, 600.0, 230.0, 0.9, '52.235560', '21.004390'),
-       (3, 'CC12345', 40.0, 35.0, 600.0, 500.0, 0.9, '52.237820', '21.003370');
+INSERT INTO vehicles (model_id, registration, max_fuel, current_fuel, max_range,
+                      current_range, latitude, longitude)
+VALUES (1, 'AA12345', 30.0, 15.0, 500.0, 250.0, '52.236499', '21.006457'),
+       (2, 'BB12345', 35.0, 15.0, 600.0, 230.0, '52.235560', '21.004390'),
+       (3, 'CC12345', 40.0, 35.0, 600.0, 500.0, '52.237820', '21.003370');
 
 INSERT INTO rentals_history
 (user_id, vehicle_id, rent_date, return_date, driving_time, driving_price, distance, distance_price, stop_over_time,
