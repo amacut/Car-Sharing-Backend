@@ -2,7 +2,9 @@ package com.example.car_sharing_app.controller;
 
 import com.example.car_sharing_app.response.VehicleResponse;
 import com.example.car_sharing_app.service.VehicleService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -18,9 +20,17 @@ public class VehicleController {
     }
 
     @GetMapping("/all")
+//    @CrossOrigin(origins = "http://localhost:4200")
     public List<VehicleResponse> findAll() {
         return vehicleService.findAll().stream()
                 .map(VehicleResponse::new)
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping("/{id}")
+    public VehicleResponse findVehicleById(@PathVariable Integer id){
+        return vehicleService.findById(id)
+                .map(VehicleResponse::new).
+                get();
     }
 }

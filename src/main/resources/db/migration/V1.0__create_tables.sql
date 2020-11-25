@@ -61,22 +61,22 @@ CREATE TABLE vehicle_types
 (
     id              INT UNSIGNED NOT NULL AUTO_INCREMENT,
     name            VARCHAR(32)  NOT NULL,
-    diving_price    VARCHAR(32)  NOT NULL,
-    stop_over_price VARCHAR(32)  NOT NULL,
-    distance_price  VARCHAR(32)  NOT NULL,
+    driving_price   DOUBLE       NOT NULL,
+    stop_over_price DOUBLE       NOT NULL,
+    distance_price  DOUBLE       NOT NULL,
 
     PRIMARY KEY (id)
 );
 
 CREATE TABLE vehicle_models
 (
-    id       INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    class_id INT UNSIGNED NOT NULL,
-    brand    VARCHAR(32)  NOT NULL,
-    model    VARCHAR(32)  NOT NULL,
+    id      INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    type_id INT UNSIGNED NOT NULL,
+    brand   VARCHAR(32)  NOT NULL,
+    model   VARCHAR(32)  NOT NULL,
 
     PRIMARY KEY (id),
-    FOREIGN KEY (class_id) REFERENCES vehicle_types (id)
+    FOREIGN KEY (type_id) REFERENCES vehicle_types (id)
 );
 
 CREATE TABLE vehicles

@@ -16,22 +16,22 @@ INSERT INTO user_driving_license (user_id, photo)
 VALUES (1, 'C:\\Users\\adama\\IdeaProjects\\car-sharing-app\\driving_license\\user_1_dl'),
        (2, 'C:\\Users\\adama\\IdeaProjects\\car-sharing-app\\driving_license\\user_2_dl');
 
-INSERT INTO vehicle_types (name, diving_price, stop_over_price, distance_price)
-VALUES ('Economy', '0,50', '0,20', '0,80'),
-       ('Comfort', '0,80', '0,20', '0,80'),
-       ('Premium', '1,00', '0,20', '1,00');
+INSERT INTO vehicle_types (name, driving_price, stop_over_price, distance_price)
+VALUES ('Economy', 0.50, 0.20, 0.80),
+       ('Comfort', 0.80, 0.20, 0.80),
+       ('Premium', 1.00, 0.20, 1.00);
 
 INSERT INTO vehicle_models
-    (class_id, brand, model)
+    (type_id, brand, model)
 VALUES (1, 'Fiat', '500'),
        (2, 'Toyota', 'Corolla Hybrid'),
        (3, 'Mercedes', 'GLA');
 
 INSERT INTO vehicles (model_id, registration, max_fuel, current_fuel, max_range,
                       current_range, latitude, longitude)
-VALUES (1, 'AA12345', 30.0, 15.0, 500.0, 250.0, '52.236499', '21.006457'),
-       (2, 'BB12345', 35.0, 15.0, 600.0, 230.0, '52.235560', '21.004390'),
-       (3, 'CC12345', 40.0, 35.0, 600.0, 500.0, '52.237820', '21.003370');
+VALUES (1, 'AA12345', 30.0, 15.0, 500.0, 250.0, '52.241729', '20.919107'),
+       (2, 'BB12345', 35.0, 15.0, 600.0, 342.0, '52.241571', '20.917374'),
+       (3, 'CC12345', 40.0, 35.0, 600.0, 72.0, '52.242576', '20.920786');
 
 INSERT INTO rentals_history
 (user_id, vehicle_id, rent_date, return_date, driving_time, driving_price, distance, distance_price, stop_over_time,
