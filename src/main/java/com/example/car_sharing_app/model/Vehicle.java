@@ -17,8 +17,12 @@ public class Vehicle {
     @Column(name = "id", unique = true, nullable = false)
     private Integer id;
 
-    @Column(name = "model_id", nullable = false)
-    private Integer vehicleModelId;
+  /*  @Column(name = "model_id", nullable = false)
+    private Integer vehicleModelId;*/
+
+    @OneToOne
+    @JoinColumn(name = "model_id")
+    private VehicleModel vehicleModel;
 
     @Column(name = "registration", nullable = false)
     private String registration;
@@ -51,4 +55,6 @@ public class Vehicle {
 
     @Column(name = "deleted_at", insertable = false)
     private LocalDateTime deletedAt;
+
+
 }

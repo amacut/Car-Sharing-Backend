@@ -1,11 +1,10 @@
 package com.example.car_sharing_app.vehicleHelper;
 
-import com.example.car_sharing_app.model.VehicleModel;
-
 import java.text.DecimalFormat;
 
 public class VehicleHelper {
     private static DecimalFormat df = new DecimalFormat("#");
+
 
     public static String getRoundedFuel(Double currentFuel, Double maxFuel) {
         double result = (currentFuel / maxFuel)*100;
@@ -16,6 +15,17 @@ public class VehicleHelper {
         double result = maxRange - currentRange;
         return df.format(result);
     }
+
+    /*private static VehicleModel getVehicleModel(Integer id) {
+        VehicleModel vehicleModel = service.findById(id).get();
+        return vehicleModel;
+    }
+    public static String getBrand(Integer id) {
+        VehicleModel vehicleModel = getVehicleModel(id);
+        return vehicleModel.getBrand();
+    }*/
+
+
 
 
 }

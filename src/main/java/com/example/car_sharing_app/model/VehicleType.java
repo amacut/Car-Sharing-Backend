@@ -1,11 +1,14 @@
 package com.example.car_sharing_app.model;
 
 import lombok.Data;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
+@EntityScan
 @Table(name = "vehicle_types")
 public class VehicleType {
 
@@ -13,6 +16,10 @@ public class VehicleType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     private Integer id;
+
+    @OneToMany
+    @JoinColumn(name = "type_id")
+    private List<VehicleModel> vehicleModels;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -25,5 +32,7 @@ public class VehicleType {
 
     @Column(name = "distance_price", nullable = false)
     private Double distancePrice;
+
+
 }
 

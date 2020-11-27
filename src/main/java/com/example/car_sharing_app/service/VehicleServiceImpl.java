@@ -51,7 +51,6 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     private void setVehicle(Vehicle vehicle, VehicleUpdateRequest vehicleUpdateRequest) {
-        vehicle.setVehicleModelId(vehicleUpdateRequest.getVehicleModelId());
         vehicle.setRegistration(vehicleUpdateRequest.getRegistration());
         vehicle.setMaxFuel(vehicleUpdateRequest.getMaxFuel());
         vehicle.setCurrentFuel(vehicleUpdateRequest.getCurrentFuel());
