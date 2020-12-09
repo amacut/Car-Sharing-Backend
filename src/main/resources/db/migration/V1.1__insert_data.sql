@@ -1,8 +1,11 @@
-INSERT INTO users (first_name, last_name, email, phone_number, password, birth_date, country, street, house_no_flat_no,
+INSERT INTO users (first_name, last_name, gender, email, phone_number, password, birth_date, country, street,
+                   house_no_flat_no,
                    postcode, city)
-VALUES ('Adam', 'Kowalski', 'adamkowalski@gmail.com', '48123456789', 'password', '1970-01-01', 'Polska', 'Złota',
+VALUES ('Adam', 'Kowalski', 'mężczyzna', 'adamkowalski@gmail.com', '48123456789', 'password', '1970-01-01', 'Polska',
+        'Złota',
         '12/24', '12-345', 'Warszawa'),
-       ('Kasia', 'Iksińska', 'kasiaiksinska@vp.pl', '48987654321', 'pass', '1990-10-27', 'Polska', 'Połczyńska',
+       ('Kasia', 'Iksińska', 'kobieta', 'kasiaiksinska@vp.pl', '48987654321', 'pass', '1990-10-27', 'Polska',
+        'Połczyńska',
         '1/307', '98-765', 'Warszawa');
 
 INSERT INTO user_company_details (user_id, company_name, nip_number, country, street, house_no_flat_no, postcode, city)

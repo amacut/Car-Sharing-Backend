@@ -5,6 +5,7 @@ CREATE TABLE users
     id               INT UNSIGNED NOT NULL AUTO_INCREMENT,
     first_name       VARCHAR(32)  NOT NULL,
     last_name        VARCHAR(32)  NOT NULL,
+    gender           VARCHAR(32)  NOT NULL,
     email            VARCHAR(64)  NOT NULL UNIQUE,
     phone_number     VARCHAR(12)  NOT NULL,
     password         VARCHAR(32)  NOT NULL,

@@ -8,8 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 public class UserController {
 
@@ -22,23 +20,16 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/users")
-    public List<User> findAll() {
-        return userService.findAll();
+    @GetMapping("/user/{email}")
+    public UserResponse findUser(@PathVariable String email) {
+        User userByEmail = userService.findByEmail(email);
+        return new UserResponse(userByEmail);
+
     }
 
-//    @PostMapping("/users")
-//    public UserResponse addUser(@RequestBody UserUpdateRequest request) {
-//        List<User> usersFromDbByEmail = userService.findByEmail(request.getEmail());
-//        if (!usersFromDbByEmail.isEmpty()) {
-//            return null;
-//        }
-//        return new UserResponse(userService.addUser(request));
-//    }
-
-    @PostMapping("/registeruser")
-    public User registerUser(@RequestBody User user) throws Exception {
-        String tempEmail = user.getEmail();
+    @PostMapping("/registration")
+    public UserResponse registerUser(@RequestBody UserUpdateRequest updateRequest) throws Exception {
+        String tempEmail = updateRequest.getEmail();
         if (tempEmail != null && !"".equals(tempEmail)) {
             User userFromDbByEmail = userService.findByEmail(tempEmail);
             if (userFromDbByEmail != null) {
@@ -46,12 +37,13 @@ public class UserController {
             }
         }
         User userObj = null;
-        userObj = userService.saveUser(user);
-        return userObj;
+        userObj = userService.addUser(updateRequest);
+        System.out.println(userObj.toString());
+        return new UserResponse(userObj);
     }
 
     @PostMapping("/login")
-    public User loginUser(@RequestBody User user) throws Exception{
+    public UserResponse loginUser(@RequestBody User user) throws Exception {
         String tempEmail = user.getEmail();
         String tempPass = user.getPassword();
         User userObj = null;
@@ -61,23 +53,17 @@ public class UserController {
         if (userObj == null) {
             throw new Exception("Bad credentials");
         }
-        return userObj;
+        return new UserResponse(userObj);
     }
 
-//    @GetMapping("/{id}")
-//    public UserResponse findUserById(@PathVariable Integer id) {
-//        return userService.findById(id)
-//                .map(UserResponse::new)
-//                .get();
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public UserResponse deleteUser(@PathVariable Integer id) {
-//        return new UserResponse(userService.deleteUser(id));
-//    }
-//
-//    @PatchMapping({"{/id}"})
-//    public UserResponse updateUser(@PathVariable Integer id, @RequestBody UserUpdateRequest updateRequest) {
-//        return new UserResponse(userService.updateUser(id, updateRequest));
-//    }
+
+    @DeleteMapping("/{email}")
+    public UserResponse deleteUser(@PathVariable String email) {
+        return new UserResponse(userService.deleteUser(email));
+    }
+
+    @PatchMapping("/{email}")
+    public UserResponse updateUser(@PathVariable String email, @RequestBody UserUpdateRequest updateRequest) {
+        return new UserResponse(userService.updateUser(email, updateRequest));
+    }
 }

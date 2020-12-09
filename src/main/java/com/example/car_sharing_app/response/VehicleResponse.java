@@ -1,7 +1,7 @@
 package com.example.car_sharing_app.response;
 
+import com.example.car_sharing_app.helper.VehicleHelper;
 import com.example.car_sharing_app.model.Vehicle;
-import com.example.car_sharing_app.vehicleHelper.VehicleHelper;
 import lombok.Data;
 
 @Data

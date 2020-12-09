@@ -1,4 +1,4 @@
-package com.example.car_sharing_app.vehicleHelper;
+package com.example.car_sharing_app.helper;
 
 import java.text.DecimalFormat;
 
@@ -7,7 +7,7 @@ public class VehicleHelper {
 
 
     public static String getRoundedFuel(Double currentFuel, Double maxFuel) {
-        double result = (currentFuel / maxFuel)*100;
+        double result = (currentFuel / maxFuel) * 100;
         return df.format(result);
     }
 
@@ -24,8 +24,6 @@ public class VehicleHelper {
         VehicleModel vehicleModel = getVehicleModel(id);
         return vehicleModel.getBrand();
     }*/
-
-
 
 
 }
