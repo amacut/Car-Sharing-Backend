@@ -11,7 +11,7 @@ public interface UserService {
 
     User findByEmailAndPassword(String email, String password);
 
-    User updateUser(String email, UserUpdateRequest userUpdateRequest);
+    User updateUser(Integer id, UserUpdateRequest userUpdateRequest);
 
     User deleteUser(String email);
 }

@@ -40,8 +40,10 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User updateUser(String email, UserUpdateRequest userUpdateRequest) {
-        User userToUpdate = userRepository.findByEmail(email);
+    public User updateUser(Integer id, UserUpdateRequest userUpdateRequest) {
+        User userToUpdate = userRepository.findById(id).orElseThrow(() -> new IllegalStateException(
+                "User " + id + " does not exists"
+        ));
         this.setUser(userToUpdate, userUpdateRequest);
         return userToUpdate;
     }

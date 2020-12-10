@@ -13,8 +13,8 @@ public class UserController {
 
     UserService userService;
 
-    @Autowired
-    ObjectMapper objectMapper;
+//    @Autowired
+//    ObjectMapper objectMapper;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -62,8 +62,8 @@ public class UserController {
         return new UserResponse(userService.deleteUser(email));
     }
 
-    @PatchMapping("/{email}")
-    public UserResponse updateUser(@PathVariable String email, @RequestBody UserUpdateRequest updateRequest) {
-        return new UserResponse(userService.updateUser(email, updateRequest));
+    @PatchMapping("/{id}")
+    public UserResponse updateUser(@PathVariable Integer id, @RequestBody UserUpdateRequest updateRequest) {
+        return new UserResponse(userService.updateUser(id, updateRequest));
     }
 }
