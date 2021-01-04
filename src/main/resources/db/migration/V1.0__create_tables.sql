@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS users, user_company_details, user_wallet, user_driving_license, vehicle_types, vehicle_models, vehicles, rentals_history, promotions;
+DROP TABLE IF EXISTS users, user_company_details, users_wallet, user_driving_license, vehicle_types, vehicle_models, vehicles, rentals_history, promotions;
 
 CREATE TABLE users
 (
@@ -37,7 +37,7 @@ CREATE TABLE user_company_details
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
-CREATE TABLE user_wallet
+CREATE TABLE users_wallet
 (
     id       INT UNSIGNED NOT NULL AUTO_INCREMENT,
     user_id  INT UNSIGNED NOT NULL,
@@ -91,6 +91,7 @@ CREATE TABLE vehicles
     current_range DOUBLE       NOT NULL,
     latitude      VARCHAR(9)   NOT NULL,
     longitude     VARCHAR(9)   NOT NULL,
+    status        VARCHAR(8)   NOT NULL,
     created_at    TIMESTAMP,
     updated_at    TIMESTAMP,
     deleted_at    TIMESTAMP,

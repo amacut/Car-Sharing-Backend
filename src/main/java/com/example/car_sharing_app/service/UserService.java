@@ -9,6 +9,8 @@ public interface UserService {
 
     User findByEmail(String email);
 
+    User findById(Integer id);
+
     User findByEmailAndPassword(String email, String password);
 
     User updateUser(Integer id, UserUpdateRequest userUpdateRequest);

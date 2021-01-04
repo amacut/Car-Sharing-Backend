@@ -30,6 +30,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findById(Integer id) {
+        return userRepository.findById(id).orElseThrow(() -> new IllegalStateException(
+                "User " + id + " does not exists"
+        ));
+    }
+
+    @Override
     public User findByEmailAndPassword(String email, String password) {
         User userRepositoryByEmailAndPassword = userRepository.findByEmailAndPassword(email, password);
         if (userRepositoryByEmailAndPassword.getDeletedAt() != null) {

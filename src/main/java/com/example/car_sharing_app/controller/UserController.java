@@ -4,17 +4,12 @@ import com.example.car_sharing_app.model.User;
 import com.example.car_sharing_app.request.UserUpdateRequest;
 import com.example.car_sharing_app.response.UserResponse;
 import com.example.car_sharing_app.service.UserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UserController {
 
     UserService userService;
-
-//    @Autowired
-//    ObjectMapper objectMapper;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -55,7 +50,6 @@ public class UserController {
         }
         return new UserResponse(userObj);
     }
-
 
     @DeleteMapping("/{email}")
     public UserResponse deleteUser(@PathVariable String email) {

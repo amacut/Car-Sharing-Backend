@@ -18,6 +18,10 @@ public class User {
     @Column(name = "id", unique = true, nullable = false)
     private Integer id;
 
+    @OneToOne
+    @JoinColumn(name = "id")
+    private UserWallet userWallet;
+
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
