@@ -1,26 +1,45 @@
 package com.example.car_sharing_app.service;
 
 import com.example.car_sharing_app.model.User;
+import com.example.car_sharing_app.model.UserWallet;
+import com.example.car_sharing_app.model.UserWalletHistory;
 import com.example.car_sharing_app.repository.UserRepository;
+import com.example.car_sharing_app.repository.UserWalletRepository;
 import com.example.car_sharing_app.request.UserUpdateRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     UserRepository userRepository;
+    UserWalletRepository userWalletRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, UserWalletRepository userWalletRepository) {
         this.userRepository = userRepository;
+        this.userWalletRepository = userWalletRepository;
     }
 
     @Override
     public User addUser(UserUpdateRequest userUpdateRequest) {
         User newUser = new User();
-        this.setUser(newUser, userUpdateRequest);
+        this.setUserDetails(newUser, userUpdateRequest);
+
+        UserWallet userWallet = new UserWallet();
+        userWallet.setCurrency("PLN");
+        userWallet.setValue(0.0);
+//        userWallet.setWalletHistories(new ArrayList<>());
+
+        newUser.setUserWallet(userWallet);
+        userWallet.setUser(newUser);
+
+        userRepository.save(newUser);
+
+
         return newUser;
     }
 
@@ -51,7 +70,7 @@ public class UserServiceImpl implements UserService {
         User userToUpdate = userRepository.findById(id).orElseThrow(() -> new IllegalStateException(
                 "User " + id + " does not exists"
         ));
-        this.setUser(userToUpdate, userUpdateRequest);
+        this.saveUser(userToUpdate, userUpdateRequest);
         return userToUpdate;
     }
 
@@ -63,7 +82,10 @@ public class UserServiceImpl implements UserService {
         return userToDelete;
     }
 
-    private void setUser(User user, UserUpdateRequest updateRequest) {
+
+
+
+    private void setUserDetails(User user, UserUpdateRequest updateRequest) {
         user.setFirstName(updateRequest.getFirstName());
         user.setLastName(updateRequest.getLastName());
         user.setGender(updateRequest.getGender());
@@ -76,6 +98,10 @@ public class UserServiceImpl implements UserService {
         user.setHouseNoFlatNo(updateRequest.getHouseNoFlatNo());
         user.setPostcode(updateRequest.getPostcode());
         user.setCity(updateRequest.getCity());
+    }
+
+    private void saveUser(User user, UserUpdateRequest updateRequest) {
+        setUserDetails(user, updateRequest);
         userRepository.save(user);
     }
 }

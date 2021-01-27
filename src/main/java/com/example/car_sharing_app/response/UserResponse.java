@@ -19,7 +19,7 @@ public class UserResponse {
     private String houseNoFlatNo;
     private String postcode;
     private String city;
-    private Double walletValue;
+//    private Double value;
 
     public UserResponse(User user) {
         this.id = user.getId();
@@ -35,6 +35,6 @@ public class UserResponse {
         this.houseNoFlatNo = user.getHouseNoFlatNo();
         this.postcode = user.getPostcode();
         this.city = user.getCity();
-        this.walletValue = user.getUserWallet().getValue();
+//        this.value = user.getUserWallet().getValue();
     }
 }

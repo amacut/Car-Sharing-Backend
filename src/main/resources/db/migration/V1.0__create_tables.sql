@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS users, user_company_details, users_wallet, user_driving_license, vehicle_types, vehicle_models, vehicles, rentals_history, promotions;
 
+
 CREATE TABLE users
 (
     id               INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -18,7 +19,31 @@ CREATE TABLE users
     created_at       TIMESTAMP,
     updated_at       TIMESTAMP,
     deleted_at       TIMESTAMP,
+
     PRIMARY KEY (id)
+);
+
+CREATE TABLE users_wallet
+(
+    id       INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    user_id  INT UNSIGNED,
+    currency VARCHAR(3),
+    value    DOUBLE,
+
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES users (id)
+);
+
+CREATE TABLE user_wallet_history
+(
+    id               INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    wallet_id        INT UNSIGNED,
+    transaction_date DATE NOT NULL,
+    type             VARCHAR(7),
+    value            DOUBLE,
+
+    PRIMARY KEY (id),
+    FOREIGN KEY (wallet_id) REFERENCES users_wallet (id)
 );
 
 CREATE TABLE user_company_details
@@ -37,16 +62,7 @@ CREATE TABLE user_company_details
     FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
-CREATE TABLE users_wallet
-(
-    id       INT UNSIGNED NOT NULL AUTO_INCREMENT,
-    user_id  INT UNSIGNED NOT NULL,
-    currency VARCHAR(3),
-    value    DOUBLE,
 
-    PRIMARY KEY (id),
-    FOREIGN KEY (user_id) REFERENCES users (id)
-);
 
 CREATE TABLE user_driving_license
 (

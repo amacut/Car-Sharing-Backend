@@ -12,8 +12,16 @@ INSERT INTO user_company_details (user_id, company_name, nip_number, country, st
 VALUES (1, 'Najlepsza firma', '1234567890', 'Polska', 'Warszawska', '201/87', '33-444', 'Warszawa');
 
 INSERT INTO users_wallet (user_id, currency, value)
-VALUES (1, 'PLN', 200.0),
-       (2, 'PLN', 20.0);
+VALUES (1, 'PLN', 50.0),
+       (2, 'PLN', 0.0);
+
+INSERT INTO user_wallet_history(wallet_id, transaction_date, type, value)
+VALUES (1, '2020.12.12', 'Wpłata', 20.0),
+       (2, '2020.12.13', 'Wypłata', -20.0),
+       (1, '2020.12.14', 'Wypłata', -20.0),
+       (2, '2020.12.15', 'Wypłata', -20.0),
+       (1, '2020.12.16', 'Wpłata', 20.0),
+       (2, '2020.12.17', 'Wpłata', 20.0);
 
 INSERT INTO user_driving_license (user_id, photo)
 VALUES (1, 'C:\\Users\\adama\\IdeaProjects\\car-sharing-app\\driving_license\\user_1_dl'),

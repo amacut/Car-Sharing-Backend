@@ -45,6 +45,10 @@ public class Vehicle {
     @Column(name = "longitude", nullable = false)
     private String longitude;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private VehicleStatus vehicleStatus;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

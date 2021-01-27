@@ -33,7 +33,6 @@ public class UserController {
         }
         User userObj = null;
         userObj = userService.addUser(updateRequest);
-        System.out.println(userObj.toString());
         return new UserResponse(userObj);
     }
 
