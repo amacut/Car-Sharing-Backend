@@ -46,7 +46,7 @@ CREATE TABLE user_wallet_history
     FOREIGN KEY (wallet_id) REFERENCES users_wallet (id)
 );
 
-CREATE TABLE user_company_details
+/*CREATE TABLE user_company_details
 (
     id               INT UNSIGNED NOT NULL AUTO_INCREMENT,
     user_id          INT UNSIGNED NOT NULL,
@@ -60,11 +60,9 @@ CREATE TABLE user_company_details
 
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users (id)
-);
+);*/
 
-
-
-CREATE TABLE user_driving_license
+/*CREATE TABLE user_driving_license
 (
     id      INT UNSIGNED NOT NULL AUTO_INCREMENT,
     user_id INT UNSIGNED NOT NULL,
@@ -72,7 +70,7 @@ CREATE TABLE user_driving_license
 
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES users (id)
-);
+);*/
 
 CREATE TABLE vehicle_types
 (
@@ -123,11 +121,11 @@ CREATE TABLE rentals_history
     vehicle_id      INT UNSIGNED NOT NULL,
     rent_date       TIMESTAMP,
     return_date     TIMESTAMP,
-    driving_time    TIME,
+    driving_time    INT,
     driving_price   DOUBLE,
     distance        DOUBLE,
     distance_price  DOUBLE,
-    stop_over_time  TIME,
+    stop_over_time  INT,
     stop_over_price DOUBLE,
     total_price     DOUBLE,
     is_active       BOOLEAN,

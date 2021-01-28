@@ -1,12 +1,12 @@
 package com.example.car_sharing_app.model;
 
-import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Entity
@@ -17,10 +17,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    @Column(name = "id")
     private Integer id;
-
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL
-            , mappedBy = "user")
-    private UserWallet userWallet;
 
     @Column(name = "first_name", nullable = false)
     private String firstName;
@@ -68,6 +64,14 @@ public class User {
 
     @Column(name = "deleted_at", insertable = false)
     private LocalDateTime deletedAt;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL
+            , mappedBy = "user")
+    private UserWallet userWallet;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private List<UserRental> userRentalList;
 
 
     public Integer getId() {
@@ -204,5 +208,13 @@ public class User {
 
     public void setDeletedAt(LocalDateTime deletedAt) {
         this.deletedAt = deletedAt;
+    }
+
+    public List<UserRental> getRentalList() {
+        return userRentalList;
+    }
+
+    public void setRentalList(List<UserRental> userRentalList) {
+        this.userRentalList = userRentalList;
     }
 }

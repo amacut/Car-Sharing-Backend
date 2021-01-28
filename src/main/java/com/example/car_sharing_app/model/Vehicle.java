@@ -1,13 +1,13 @@
 package com.example.car_sharing_app.model;
 
-import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
-@Data
+
 @Entity
 @Table(name = "vehicles")
 public class Vehicle {
@@ -16,9 +16,6 @@ public class Vehicle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
     private Integer id;
-
-  /*  @Column(name = "model_id", nullable = false)
-    private Integer vehicleModelId;*/
 
     @OneToOne
     @JoinColumn(name = "model_id")
@@ -60,5 +57,118 @@ public class Vehicle {
     @Column(name = "deleted_at", insertable = false)
     private LocalDateTime deletedAt;
 
+    @OneToMany(mappedBy = "vehicle")
+    private List<UserRental> userRentalList;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public VehicleModel getVehicleModel() {
+        return vehicleModel;
+    }
+
+    public void setVehicleModel(VehicleModel vehicleModel) {
+        this.vehicleModel = vehicleModel;
+    }
+
+    public String getRegistration() {
+        return registration;
+    }
+
+    public void setRegistration(String registration) {
+        this.registration = registration;
+    }
+
+    public Double getMaxFuel() {
+        return maxFuel;
+    }
+
+    public void setMaxFuel(Double maxFuel) {
+        this.maxFuel = maxFuel;
+    }
+
+    public Double getCurrentFuel() {
+        return currentFuel;
+    }
+
+    public void setCurrentFuel(Double currentFuel) {
+        this.currentFuel = currentFuel;
+    }
+
+    public Double getMaxRange() {
+        return maxRange;
+    }
+
+    public void setMaxRange(Double maxRange) {
+        this.maxRange = maxRange;
+    }
+
+    public Double getCurrentRange() {
+        return currentRange;
+    }
+
+    public void setCurrentRange(Double currentRange) {
+        this.currentRange = currentRange;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public VehicleStatus getVehicleStatus() {
+        return vehicleStatus;
+    }
+
+    public void setVehicleStatus(VehicleStatus vehicleStatus) {
+        this.vehicleStatus = vehicleStatus;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public LocalDateTime getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(LocalDateTime deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    public List<UserRental> getRentalList() {
+        return userRentalList;
+    }
+
+    public void setRentalList(List<UserRental> userRentalList) {
+        this.userRentalList = userRentalList;
+    }
 }
