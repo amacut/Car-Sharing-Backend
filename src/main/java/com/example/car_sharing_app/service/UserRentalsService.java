@@ -8,4 +8,6 @@ public interface UserRentalsService {
     UserRental getById(Integer id);
 
     UserRental addNewUserRental(UserRentalRequest userRentalRequest);
+
+    Double calculateRentalTotalPrice(Integer vehicleId, UserRentalRequest userRentalRequest);
 }

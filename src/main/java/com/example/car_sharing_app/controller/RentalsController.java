@@ -2,13 +2,12 @@ package com.example.car_sharing_app.controller;
 
 import com.example.car_sharing_app.model.User;
 import com.example.car_sharing_app.model.UserRental;
+import com.example.car_sharing_app.request.UserRentalRequest;
 import com.example.car_sharing_app.response.UserRentalsDetailsResponse;
 import com.example.car_sharing_app.response.UserRentalsResponse;
 import com.example.car_sharing_app.service.UserRentalsService;
 import com.example.car_sharing_app.service.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -35,5 +34,15 @@ public class RentalsController {
     public UserRentalsDetailsResponse getRentalsDetails(@PathVariable Integer id) {
         UserRental rental = rentalsService.getById(id);
         return new UserRentalsDetailsResponse(rental);
+    }
+
+    @PostMapping("/newRental")
+    public UserRental addUserRental(@RequestBody UserRentalRequest userRentalRequest) {
+        return rentalsService.addNewUserRental(userRentalRequest);
+    }
+
+    @PatchMapping("/calculateRent/{id}")
+    public Double calculateRent(@PathVariable Integer id, @RequestBody UserRentalRequest userRentalRequest){
+        return rentalsService.calculateRentalTotalPrice(id, userRentalRequest);
     }
 }

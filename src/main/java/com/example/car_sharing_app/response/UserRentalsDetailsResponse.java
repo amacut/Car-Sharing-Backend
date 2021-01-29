@@ -10,6 +10,8 @@ public class UserRentalsDetailsResponse {
     private Integer id;
     private String rentDate;
     private String returnDate;
+    private String origin;
+    private String destination;
     private String drivingTime;
     private Double drivingPrice;
     private Double distance;
@@ -29,6 +31,8 @@ public class UserRentalsDetailsResponse {
         this.id = userRental.getId();
         this.rentDate = DateHelper.dateTimeToString(userRental.getRentDate());
         this.returnDate = DateHelper.dateTimeToString(userRental.getReturnDate());
+        this.origin = userRental.getOrigin();
+        this.destination = userRental.getDestination();
         this.drivingTime = DateHelper.durationToString(userRental.getDrivingTime());
         this.drivingPrice = userRental.getDrivingPrice();
         this.distance = userRental.getDistance();

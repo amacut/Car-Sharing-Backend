@@ -1,5 +1,7 @@
 package com.example.car_sharing_app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -17,6 +19,12 @@ public class UserRental {
 
     @Column(name = "return_date")
     private LocalDateTime returnDate;
+
+    @Column(name = "origin")
+    private String origin;
+
+    @Column(name = "destination")
+    private String destination;
 
     @Column(name = "driving_time")
     private Integer drivingTime;
@@ -42,6 +50,12 @@ public class UserRental {
     @Column(name = "is_active")
     private Boolean isActive;
 
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
@@ -68,6 +82,22 @@ public class UserRental {
 
     public void setReturnDate(LocalDateTime returnDate) {
         this.returnDate = returnDate;
+    }
+
+    public String getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(String origin) {
+        this.origin = origin;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
     }
 
     public Integer getDrivingTime() {
@@ -140,5 +170,13 @@ public class UserRental {
 
     public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
