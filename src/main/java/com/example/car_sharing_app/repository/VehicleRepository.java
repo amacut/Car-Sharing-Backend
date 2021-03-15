@@ -9,5 +9,5 @@ import java.util.List;
 //@CrossOrigin(origins = "http://localhost:4200")
 public interface VehicleRepository extends JpaRepository<Vehicle, Integer> {
 
-    List<Vehicle> findAll();
+    List<Vehicle> findAllBy();
 }

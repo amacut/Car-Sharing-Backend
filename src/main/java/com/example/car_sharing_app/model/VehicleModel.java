@@ -19,9 +19,6 @@ public class VehicleModel {
     @JoinColumn(name = "model_id")
     private List<Vehicle> vehicles;
 
-    /*@Column(name = "type_id", nullable = false)
-    private Integer typeId;*/
-
     @OneToOne
     @JoinColumn(name = "type_id")
     private VehicleType vehicleType;
@@ -32,6 +29,12 @@ public class VehicleModel {
 
     @Column(name = "model", nullable = false)
     private String model;
+
+    @Column(name = "tank_capacity")
+    private Double tankCapacity;
+
+    @Column(name = "average_fuel_consumption")
+    private Double averageFuelConsumption;
 
 
 }

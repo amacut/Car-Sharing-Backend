@@ -1,5 +1,6 @@
 package com.example.car_sharing_app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -24,17 +25,9 @@ public class Vehicle {
     @Column(name = "registration", nullable = false)
     private String registration;
 
-    @Column(name = "max_fuel", nullable = false)
-    private Double maxFuel;
-
     @Column(name = "current_fuel", nullable = false)
     private Double currentFuel;
 
-    @Column(name = "max_range", nullable = false)
-    private Double maxRange;
-
-    @Column(name = "current_range", nullable = false)
-    private Double currentRange;
 
     @Column(name = "latitude", nullable = false)
     private String latitude;
@@ -57,8 +50,13 @@ public class Vehicle {
     @Column(name = "deleted_at", insertable = false)
     private LocalDateTime deletedAt;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "vehicle")
     private List<UserRental> userRentalList;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "vehicle")
+    private List<Reservation> reservations;
 
     public Integer getId() {
         return id;
@@ -84,36 +82,12 @@ public class Vehicle {
         this.registration = registration;
     }
 
-    public Double getMaxFuel() {
-        return maxFuel;
-    }
-
-    public void setMaxFuel(Double maxFuel) {
-        this.maxFuel = maxFuel;
-    }
-
     public Double getCurrentFuel() {
         return currentFuel;
     }
 
     public void setCurrentFuel(Double currentFuel) {
         this.currentFuel = currentFuel;
-    }
-
-    public Double getMaxRange() {
-        return maxRange;
-    }
-
-    public void setMaxRange(Double maxRange) {
-        this.maxRange = maxRange;
-    }
-
-    public Double getCurrentRange() {
-        return currentRange;
-    }
-
-    public void setCurrentRange(Double currentRange) {
-        this.currentRange = currentRange;
     }
 
     public String getLatitude() {
@@ -170,5 +144,21 @@ public class Vehicle {
 
     public void setRentalList(List<UserRental> userRentalList) {
         this.userRentalList = userRentalList;
+    }
+
+    public List<UserRental> getUserRentalList() {
+        return userRentalList;
+    }
+
+    public void setUserRentalList(List<UserRental> userRentalList) {
+        this.userRentalList = userRentalList;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }

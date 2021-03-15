@@ -19,6 +19,7 @@ public class VehicleResponse {
     private String currentRange;
     private String latitude;
     private String longitude;
+    private String vehicleStatus;
 
     public VehicleResponse(Vehicle vehicle) {
         this.id = vehicle.getId();
@@ -29,9 +30,10 @@ public class VehicleResponse {
         this.stopOverPrice = vehicle.getVehicleModel().getVehicleType().getStopOverPrice();
         this.distancePrice = vehicle.getVehicleModel().getVehicleType().getDistancePrice();
         this.registration = vehicle.getRegistration();
-        this.currentFuel = VehicleHelper.getRoundedFuel(vehicle.getCurrentFuel(), vehicle.getMaxFuel());
-        this.currentRange = VehicleHelper.getRoundedRange(vehicle.getCurrentRange(), vehicle.getMaxRange());
+        this.currentFuel = VehicleHelper.getFormatCurrentFuel(vehicle.getCurrentFuel());
+        this.currentRange = VehicleHelper.getCurrentRange(vehicle);
         this.latitude = vehicle.getLatitude();
         this.longitude = vehicle.getLongitude();
+        this.vehicleStatus = vehicle.getVehicleStatus().name();
     }
 }

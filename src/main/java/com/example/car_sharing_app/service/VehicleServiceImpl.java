@@ -1,31 +1,75 @@
 package com.example.car_sharing_app.service;
 
+import com.example.car_sharing_app.model.Reservation;
+import com.example.car_sharing_app.model.User;
 import com.example.car_sharing_app.model.Vehicle;
+import com.example.car_sharing_app.model.VehicleStatus;
+import com.example.car_sharing_app.repository.ReservationRepository;
 import com.example.car_sharing_app.repository.VehicleRepository;
+import com.example.car_sharing_app.request.VehicleCoordinatesRequest;
 import com.example.car_sharing_app.request.VehicleUpdateRequest;
+import com.example.car_sharing_app.response.VehicleResponse;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class VehicleServiceImpl implements VehicleService {
 
     VehicleRepository vehicleRepository;
+    UserService userService;
+    ReservationRepository reservationRepository;
 
-    public VehicleServiceImpl(VehicleRepository vehicleRepository) {
+    public VehicleServiceImpl(VehicleRepository vehicleRepository, UserService userService, ReservationRepository reservationRepository) {
         this.vehicleRepository = vehicleRepository;
+        this.userService = userService;
+        this.reservationRepository = reservationRepository;
+    }
+
+    private void checkVehiclesStatus() {
+        List<Reservation> endedReservations = reservationRepository.findAllByEndReservationIsBefore(LocalDateTime.now());
+
+        for (Reservation reservation : endedReservations) {
+            Vehicle vehicle = reservation.getVehicle();
+            if (vehicle.getVehicleStatus().equals(VehicleStatus.RESERVED) && reservation.getEndReservation().isBefore(LocalDateTime.now()) && !reservation.getFinished()) {
+                System.out.println(vehicle.getVehicleStatus().equals(VehicleStatus.RESERVED));
+                System.out.println(vehicle.getId() + " " + vehicle.getVehicleStatus());
+                vehicle.setVehicleStatus(VehicleStatus.FREE);
+                reservation.setFinished(true);
+                vehicleRepository.save(vehicle);
+            }
+        }
     }
 
     @Override
-    public List<Vehicle> findAll() {
-        return vehicleRepository.findAll();
+    public List<Vehicle> findAll(Integer userId) {
+        checkVehiclesStatus();
+        User user = userService.findById(userId);
+        List<Vehicle> vehicles = user.getReservations().stream()
+                .filter(reservation -> reservation.getEndReservation().isAfter(LocalDateTime.now()))
+                .map(Reservation::getVehicle)
+                .collect(Collectors.toList());
+
+        List<Vehicle> collect = vehicleRepository.findAll().stream()
+                .filter(vehicle -> vehicle.getVehicleStatus().equals(VehicleStatus.FREE))
+                .collect(Collectors.toList());
+        collect.addAll(vehicles);
+        /*List<Vehicle> finalCollect = collect.stream().distinct().collect(Collectors.toList());
+        for (Vehicle vehicle : finalCollect) {
+            System.out.println(vehicle.getId());
+        }*/
+        return collect;
+
     }
 
     @Override
-    public Optional<Vehicle> findById(Integer id) {
-        return vehicleRepository.findById(id);
+    public Vehicle findById(Integer id) {
+        return vehicleRepository.findById(id).orElseThrow(() -> new IllegalStateException(
+                "Vehicle " + id + " does not exist"
+        ));
     }
 
     @Override
@@ -36,10 +80,14 @@ public class VehicleServiceImpl implements VehicleService {
     }
 
     @Override
-    public Vehicle updateVehicle(Integer id, VehicleUpdateRequest vehicleUpdateRequest) {
-        Vehicle vehicleToUpdate = vehicleRepository.findById(id).orElse(new Vehicle());
-        this.setVehicle(vehicleToUpdate, vehicleUpdateRequest);
-        return vehicleToUpdate;
+    public VehicleResponse changeVehicleDetails(Integer id, VehicleCoordinatesRequest vehicleCoordinatesRequest) {
+        Vehicle vehicleToUpdate = findById(id);
+        vehicleToUpdate.setLatitude(vehicleCoordinatesRequest.getLatitude());
+        vehicleToUpdate.setLongitude(vehicleCoordinatesRequest.getLongitude());
+        System.out.println(vehicleCoordinatesRequest.getLatitude());
+        System.out.println(vehicleCoordinatesRequest.getLongitude());
+        vehicleRepository.save(vehicleToUpdate);
+        return new VehicleResponse(vehicleToUpdate);
     }
 
     @Override
@@ -52,10 +100,7 @@ public class VehicleServiceImpl implements VehicleService {
 
     private void setVehicle(Vehicle vehicle, VehicleUpdateRequest vehicleUpdateRequest) {
         vehicle.setRegistration(vehicleUpdateRequest.getRegistration());
-        vehicle.setMaxFuel(vehicleUpdateRequest.getMaxFuel());
         vehicle.setCurrentFuel(vehicleUpdateRequest.getCurrentFuel());
-        vehicle.setMaxRange(vehicleUpdateRequest.getMaxRange());
-        vehicle.setCurrentRange(vehicleUpdateRequest.getCurrentRange());
         vehicle.setLatitude(vehicleUpdateRequest.getLatitude());
         vehicle.setLongitude(vehicleUpdateRequest.getLongitude());
         vehicleRepository.save(vehicle);
