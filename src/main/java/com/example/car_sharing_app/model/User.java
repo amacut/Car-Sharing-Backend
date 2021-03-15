@@ -1,5 +1,6 @@
 package com.example.car_sharing_app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -69,9 +70,15 @@ public class User {
             , mappedBy = "user")
     private UserWallet userWallet;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+    /*@JoinColumn(name = "user_id")*/
     private List<UserRental> userRentalList;
+
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
+    /*@JoinColumn(name = "user_id")*/
+    private List<Reservation> reservations;
 
 
     public Integer getId() {
@@ -216,5 +223,21 @@ public class User {
 
     public void setRentalList(List<UserRental> userRentalList) {
         this.userRentalList = userRentalList;
+    }
+
+    public List<UserRental> getUserRentalList() {
+        return userRentalList;
+    }
+
+    public void setUserRentalList(List<UserRental> userRentalList) {
+        this.userRentalList = userRentalList;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }

@@ -2,7 +2,6 @@ package com.example.car_sharing_app.service;
 
 import com.example.car_sharing_app.model.User;
 import com.example.car_sharing_app.model.UserWallet;
-import com.example.car_sharing_app.model.UserWalletHistory;
 import com.example.car_sharing_app.repository.UserRepository;
 import com.example.car_sharing_app.repository.UserWalletRepository;
 import com.example.car_sharing_app.request.UserUpdateRequest;
@@ -10,8 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -81,8 +78,6 @@ public class UserServiceImpl implements UserService {
         userRepository.save(userToDelete);
         return userToDelete;
     }
-
-
 
 
     private void setUserDetails(User user, UserUpdateRequest updateRequest) {

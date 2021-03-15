@@ -1,6 +1,6 @@
 package com.example.car_sharing_app.response;
 
-import com.example.car_sharing_app.helper.UserHelper;
+import com.example.car_sharing_app.helper.DateHelper;
 import com.example.car_sharing_app.model.User;
 import lombok.Data;
 
@@ -29,7 +29,7 @@ public class UserResponse {
         this.email = user.getEmail();
         this.phoneNumber = user.getPhoneNumber();
         this.password = user.getPassword();
-        this.birthDate = UserHelper.dateToString(user.getBirthDate());
+        this.birthDate = DateHelper.dateToString(user.getBirthDate());
         this.country = user.getCountry();
         this.street = user.getStreet();
         this.houseNoFlatNo = user.getHouseNoFlatNo();

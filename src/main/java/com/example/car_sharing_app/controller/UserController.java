@@ -2,9 +2,14 @@ package com.example.car_sharing_app.controller;
 
 import com.example.car_sharing_app.model.User;
 import com.example.car_sharing_app.request.UserUpdateRequest;
+import com.example.car_sharing_app.response.UserRentalsDetailsResponse;
+import com.example.car_sharing_app.response.UserRentalsResponse;
 import com.example.car_sharing_app.response.UserResponse;
 import com.example.car_sharing_app.service.UserService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class UserController {
@@ -59,4 +64,6 @@ public class UserController {
     public UserResponse updateUser(@PathVariable Integer id, @RequestBody UserUpdateRequest updateRequest) {
         return new UserResponse(userService.updateUser(id, updateRequest));
     }
+
+
 }
