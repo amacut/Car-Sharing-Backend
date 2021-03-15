@@ -13,4 +13,6 @@ public class UserRentalRequest {
     private Double distance;
     private Integer stopOverTime;
     private Integer vehicleId;
+    private String latitude;
+    private String longitude;
 }

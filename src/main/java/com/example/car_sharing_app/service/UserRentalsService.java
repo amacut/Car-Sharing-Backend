@@ -1,6 +1,7 @@
 package com.example.car_sharing_app.service;
 
 import com.example.car_sharing_app.model.UserRental;
+import com.example.car_sharing_app.model.Vehicle;
 import com.example.car_sharing_app.request.UserRentalRequest;
 
 public interface UserRentalsService {
@@ -9,5 +10,5 @@ public interface UserRentalsService {
 
     UserRental addNewUserRental(UserRentalRequest userRentalRequest);
 
-    Double calculateRentalTotalPrice(Integer vehicleId, UserRentalRequest userRentalRequest);
+    Double calculateRentalTotalPrice(Vehicle vehicle, UserRentalRequest userRentalRequest);
 }

@@ -47,9 +47,6 @@ public class UserRental {
     @Column(name = "total_price")
     private Double totalPrice;
 
-    @Column(name = "is_active")
-    private Boolean isActive;
-
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -154,14 +151,6 @@ public class UserRental {
 
     public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
-    }
-
-    public Boolean getActive() {
-        return isActive;
-    }
-
-    public void setActive(Boolean active) {
-        isActive = active;
     }
 
     public Vehicle getVehicle() {

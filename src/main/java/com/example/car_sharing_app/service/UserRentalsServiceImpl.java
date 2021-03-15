@@ -1,5 +1,6 @@
 package com.example.car_sharing_app.service;
 
+import com.example.car_sharing_app.helper.VehicleHelper;
 import com.example.car_sharing_app.model.User;
 import com.example.car_sharing_app.model.UserRental;
 import com.example.car_sharing_app.model.Vehicle;
@@ -20,6 +21,7 @@ public class UserRentalsServiceImpl implements UserRentalsService {
     UserRentalsRepository rentalsRepository;
     VehicleRepository vehicleRepository;
     UserService userService;
+    VehicleService vehicleService;
     UserRepository userRepository;
     UserWalletService walletService;
 
@@ -30,11 +32,13 @@ public class UserRentalsServiceImpl implements UserRentalsService {
     public UserRentalsServiceImpl(UserRentalsRepository rentalsRepository,
                                   VehicleRepository vehicleRepository,
                                   UserService userService,
+                                  VehicleService vehicleService,
                                   UserRepository userRepository,
                                   UserWalletService walletService) {
         this.rentalsRepository = rentalsRepository;
         this.vehicleRepository = vehicleRepository;
         this.userService = userService;
+        this.vehicleService = vehicleService;
         this.userRepository = userRepository;
         this.walletService = walletService;
     }
@@ -52,12 +56,19 @@ public class UserRentalsServiceImpl implements UserRentalsService {
 
         Integer userId = userRentalRequest.getUserId();
         User userById = userService.findById(userId);
-        this.setRentalDetails(newUserRental, userRentalRequest, userById);
+        Integer vehicleId = userRentalRequest.getVehicleId();
+        Vehicle vehicleById = vehicleService.findById(vehicleId);
+        this.setRentalDetails(newUserRental, userRentalRequest, userById, vehicleById);
+        Double fuelAfterRental = this.updateVehicleAfterRental(vehicleById, userRentalRequest);
 
         Boolean isUserHasMoney = walletService.debitsWallet(userId, newUserRental.getTotalPrice());
         if (isUserHasMoney) {
             List<UserRental> userRentalList = userById.getRentalList();
             userRentalList.add(newUserRental);
+            vehicleById.setCurrentFuel(fuelAfterRental);
+            vehicleById.setLatitude(userRentalRequest.getLatitude());
+            vehicleById.setLongitude(userRentalRequest.getLongitude());
+            vehicleRepository.save(vehicleById);
 
             userRepository.save(userById);
 
@@ -69,34 +80,34 @@ public class UserRentalsServiceImpl implements UserRentalsService {
     }
 
 
-    public Double calculateRentalTotalPrice(Integer vehicleId, UserRentalRequest userRentalRequest) {
-        Vehicle vehicle = this.getVehicle(vehicleId);
+    public Double calculateRentalTotalPrice(Vehicle vehicle, UserRentalRequest userRentalRequest) {
         VehicleType vehicleType = vehicle.getVehicleModel().getVehicleType();
 
         Double drivingPrice = vehicleType.getDrivingPrice();
         Double distancePrice = vehicleType.getDistancePrice();
         Double stopOverPrice = vehicleType.getStopOverPrice();
 
-        totalDrivingPrice = Math.ceil(userRentalRequest.getDrivingTime()/60.0) * drivingPrice;
-        totalDistancePrice = userRentalRequest.getDistance() * distancePrice/1000;
-        totalStopOverPrice = Math.ceil(userRentalRequest.getStopOverTime()/60.0) * stopOverPrice;
+        totalDrivingPrice = Math.ceil(userRentalRequest.getDrivingTime() / 60.0) * drivingPrice;
+        totalDistancePrice = userRentalRequest.getDistance() * distancePrice / 1000;
+        totalStopOverPrice = Math.ceil(userRentalRequest.getStopOverTime() / 60.0) * stopOverPrice;
 
         return totalDrivingPrice + totalDistancePrice + totalStopOverPrice;
     }
 
-    private void setRentalDetails(UserRental newUserRental, UserRentalRequest userRentalRequest, User user) {
-        Integer vehicleId = userRentalRequest.getVehicleId();
-        Vehicle vehicle = this.getVehicle(vehicleId);
+    private void setRentalDetails(UserRental newUserRental, UserRentalRequest userRentalRequest, User user, Vehicle vehicle) {
 
-        Double totalPrice = this.calculateRentalTotalPrice(vehicleId, userRentalRequest);
+        Double distance = userRentalRequest.getDistance();
+
+
+        Double totalPrice = this.calculateRentalTotalPrice(vehicle, userRentalRequest);
         Integer drivingTime = userRentalRequest.getDrivingTime();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         LocalDateTime rentDate = LocalDateTime.now();
         LocalDateTime returnDateTime = rentDate.plusSeconds(drivingTime);
-        String formatRentDate = LocalDateTime.now().format(formatter);
+        String formatRentDate = rentDate.format(formatter);
         String formatReturnDate = returnDateTime.format(formatter);
-        
+
         newUserRental.setUser(user);
         newUserRental.setRentDate(LocalDateTime.parse(formatRentDate, formatter));
         newUserRental.setReturnDate(LocalDateTime.parse(formatReturnDate, formatter));
@@ -104,19 +115,18 @@ public class UserRentalsServiceImpl implements UserRentalsService {
         newUserRental.setDestination(userRentalRequest.getDestination());
         newUserRental.setDrivingTime(drivingTime);
         newUserRental.setDrivingPrice(totalDrivingPrice);
-        newUserRental.setDistance(userRentalRequest.getDistance());
+        newUserRental.setDistance(distance);
         newUserRental.setDistancePrice(totalDistancePrice);
         newUserRental.setStopOverTime(userRentalRequest.getStopOverTime());
         newUserRental.setStopOverPrice(totalStopOverPrice);
         newUserRental.setTotalPrice(totalPrice);
-        newUserRental.setActive(false);
         newUserRental.setVehicle(vehicle);
 //        rentalsRepository.save(newUserRental);
     }
 
-    private Vehicle getVehicle(Integer vehicleId) {
-        return vehicleRepository.findById(vehicleId).orElseThrow(() -> new IllegalStateException(
-                "Wrong vehicleId " + vehicleId
-        ));
+    private Double updateVehicleAfterRental(Vehicle vehicle, UserRentalRequest userRentalRequest) {
+        Double currentFuel = VehicleHelper.updateCurrentFuel(vehicle, userRentalRequest.getDistance());
+        return currentFuel;
     }
+
 }
