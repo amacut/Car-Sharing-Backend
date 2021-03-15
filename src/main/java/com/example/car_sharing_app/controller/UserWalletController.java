@@ -10,6 +10,8 @@ import com.example.car_sharing_app.service.UserWalletService;
 import com.fasterxml.jackson.annotation.JsonValue;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -34,11 +36,11 @@ public class UserWalletController {
     @PatchMapping("/credits/{id}")
     public Double creditsUserWallet(@PathVariable Integer id, @RequestBody WalletUpdateRequest updateRequest) {
         User user = userService.findById(id);
-        if (user.getPassword().equals(updateRequest.getPassword())) {
+        if (updateRequest.getValue() > 0 && user.getPassword().equals(updateRequest.getPassword())) {
             Double newWalletValue = userWalletService.creditsWallet(id, updateRequest.getValue());
             return newWalletValue;
         } else {
-            throw new IllegalStateException("Złe hasło");
+            throw new IllegalStateException("Złe dane");
         }
     }
 
@@ -51,10 +53,11 @@ public class UserWalletController {
     }
 
     @GetMapping("/history/{id}")
-    public Set<UserWalletHistoryResponse> getAll(@PathVariable Integer id) {
+    public List<UserWalletHistoryResponse> getAll(@PathVariable Integer id) {
         UserWallet userWalletByUserId = userWalletService.findUserWalletByUserId(id);
         return userWalletByUserId.getWalletHistories().stream()
                 .map(UserWalletHistoryResponse::new)
-                .collect(Collectors.toSet());
+                .sorted(Comparator.comparing(UserWalletHistoryResponse::getId).reversed())
+                .collect(Collectors.toList());
     }
 }

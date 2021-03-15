@@ -12,6 +12,6 @@ public interface UserWalletService {
 
     Double creditsWallet(Integer id, Double money);
 
-    Double debitsWallet(Integer id, Double money);
+    Boolean debitsWallet(Integer id, Double money);
 
 }

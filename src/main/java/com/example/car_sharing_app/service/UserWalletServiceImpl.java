@@ -31,22 +31,25 @@ public class UserWalletServiceImpl implements UserWalletService {
         double newUserWalletValue = userWallet.getValue() + value;
         userWallet.setValue(newUserWalletValue);
 
-        List<UserWalletHistory> walletHistories = userWallet.getWalletHistories();
-        UserWalletHistory transaction = this.addTransaction(value);
-        walletHistories.add(transaction);
+        addTransactionToWalletHistory(value, userWallet);
 
         userWalletRepository.save(userWallet);
         return newUserWalletValue;
     }
 
+
+
     @Override
-    public Double debitsWallet(Integer id, Double money) {
+    public Boolean debitsWallet(Integer id, Double totalPrice) {
         UserWallet userWallet = userWalletRepository.findUserWalletByUserId(id);
-        if (userWallet.getValue() >= money) {
-            double newUserWalletValue = userWallet.getValue() - money;
+        if (userWallet.getValue() >= totalPrice) {
+            double newUserWalletValue = userWallet.getValue() - totalPrice;
             userWallet.setValue(newUserWalletValue);
+
+            addTransactionToWalletHistory(-totalPrice, userWallet);
+
             userWalletRepository.save(userWallet);
-            return newUserWalletValue;
+            return true;
         } else {
             throw new IllegalStateException(
                     "Not enough money"
@@ -54,10 +57,20 @@ public class UserWalletServiceImpl implements UserWalletService {
         }
     }
 
+    private void addTransactionToWalletHistory(Double value, UserWallet userWallet) {
+        List<UserWalletHistory> walletHistory = userWallet.getWalletHistories();
+        UserWalletHistory transaction = this.addTransaction(value);
+        walletHistory.add(transaction);
+    }
+
     private UserWalletHistory addTransaction(Double value) {
         UserWalletHistory newTransaction = new UserWalletHistory();
         newTransaction.setTransaction_date(LocalDate.now());
-        newTransaction.setType("Wpłata");
+        if (value > 0) {
+            newTransaction.setType("Wpłata");
+        } else  {
+            newTransaction.setType("Opłata za wynajem");
+        }
         newTransaction.setValue(value);
         return walletHistoryRepository.save(newTransaction);
     }

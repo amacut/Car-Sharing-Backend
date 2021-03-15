@@ -1,7 +1,6 @@
 package com.example.car_sharing_app.response;
 
-import com.example.car_sharing_app.helper.UserHelper;
-import com.example.car_sharing_app.model.UserWallet;
+import com.example.car_sharing_app.helper.DateHelper;
 import com.example.car_sharing_app.model.UserWalletHistory;
 import lombok.Data;
 
@@ -15,7 +14,7 @@ public class UserWalletHistoryResponse {
 
     public UserWalletHistoryResponse(UserWalletHistory userWalletHistory) {
         this.id = userWalletHistory.getId();
-        this.transaction_date = UserHelper.dateToString(userWalletHistory.getTransaction_date());
+        this.transaction_date = DateHelper.dateToString(userWalletHistory.getTransaction_date());
         this.type = userWalletHistory.getType();
         this.value = userWalletHistory.getValue();
     }
